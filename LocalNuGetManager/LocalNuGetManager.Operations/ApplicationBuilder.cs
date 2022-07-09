@@ -1,5 +1,6 @@
 ﻿using LocalNuGetManager.Operations.Contracts;
 using LocalNuGetManager.Operations.Contracts.Operations;
+using LocalNuGetManager.Operations.Extensions;
 using LocalNuGetManager.Operations.Operations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,7 @@ namespace LocalNuGetManager.Operations
                 .AddJsonFile("appsettings.json");
             
             //Register Standards
-            Services
-                .AddTransient<ICommandLineInterpreter, CommandLineInterpreter>();
+            Services.RegisterOperations();
         }
         
         public IApplication Build()
