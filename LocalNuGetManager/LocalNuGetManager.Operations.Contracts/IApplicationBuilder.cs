@@ -5,8 +5,8 @@ namespace LocalNuGetManager.Operations.Contracts
 {
     public interface IApplicationBuilder
     {
-        public IConfigurationBuilder Configuration { get; }
-        public IServiceCollection Services { get; }
+        public IConfigurationBuilder ConfigurationBuilder { get; }
+        public IServiceCollection ServicesCollection { get; }
 
         public IApplication Build();
     }

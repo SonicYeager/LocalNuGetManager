@@ -1,21 +1,41 @@
 ﻿using LocalNuGetManager.Operations.Contracts.Data;
 using LocalNuGetManager.Operations.Contracts.Operations;
+using Microsoft.Extensions.Logging;
 using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LocalNuGetManager.Operations.Operations
 {
     public class NuGetManagerCollection : INuGetManagerCollection
     {
-        private readonly IDataPersistenceManager<ICollection<INuGetManager>> _dataPersistenceManager;
+        private readonly IDataPersistenceManager<ICollection<NuGetModel>> _dataPersistenceManager;
         private readonly ICollection<INuGetManager> _nugetManagers;
+        private readonly ILogger<NuGetManagerCollection> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public int Count { get => _nugetManagers.Count; }
         public bool IsReadOnly { get => _nugetManagers.IsReadOnly; }
 
-        public NuGetManagerCollection(IDataPersistenceManager<ICollection<INuGetManager>> dataPersistenceManager)
+        public NuGetManagerCollection(IDataPersistenceManager<ICollection<NuGetModel>> dataPersistenceManager, ILogger<NuGetManagerCollection> logger, IServiceProvider serviceProvider)
         {
             _dataPersistenceManager = dataPersistenceManager;
-            _nugetManagers = _dataPersistenceManager.PersistentData;
+            _logger = logger;
+            _serviceProvider = serviceProvider;
+
+            try
+            {
+                _nugetManagers = _dataPersistenceManager.PersistentData.Select(n =>
+                {
+                    var manager = _serviceProvider.GetService<INuGetManager>();
+                    manager!.NuGet = n;
+                    return manager;
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to load nuget managers, created empty collection!");
+                _nugetManagers = new List<INuGetManager>();
+            }
         }
         
         public INuGetManager Find(Predicate<NuGetModel> predicate)
@@ -25,7 +45,7 @@ namespace LocalNuGetManager.Operations.Operations
         
         public void Save()
         {
-            _dataPersistenceManager.PersistentData = _nugetManagers;
+            _dataPersistenceManager.PersistentData = _nugetManagers.Select(m => m.NuGet).ToList();
         }
         
         public IEnumerator<INuGetManager> GetEnumerator()

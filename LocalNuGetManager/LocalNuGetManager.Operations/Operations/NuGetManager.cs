@@ -8,19 +8,14 @@ namespace LocalNuGetManager.Operations.Operations
     public class NuGetManager : INuGetManager
     {
         private readonly IPathProvider _pathProvider;
-        
-        public NuGetModel NuGet { get; }
+
+        public NuGetModel NuGet { get; set; }
         
         public NuGetManager(IPathProvider pathProvider)
         {
             _pathProvider = pathProvider;
         }
 
-        public void SetName(string name)
-        {
-            NuGet.Name = name;
-        }
-        
         public void IncreasePatch()
         {
             NuGet.PatchVersion++;
@@ -38,13 +33,30 @@ namespace LocalNuGetManager.Operations.Operations
         
         public void Build()
         {
-            throw new NotImplementedException(); //TODO: Process.Start(_pathProvider.GetDotNetPath(), _model.Name);
+            Process.Start(
+                _pathProvider.GetDotNetPath(), 
+                new []
+                {
+                    "pack",
+                    $"{NuGet.Name}.csproj",
+                    $"-p:PackageVersion=\"{NuGet.Version}\"",
+                });
         }
         
         public void Publish()
         {
             Debug.Assert(!string.IsNullOrEmpty(NuGet.Name), "name is not set");
-            Process.Start(_pathProvider.GetNuGetPath(), new [] {"push", $"{NuGet.Name}.csproj", "--version", NuGet.Version}); //TODO: complete path
+            Process.Start(
+                _pathProvider.GetNuGetPath(), 
+                new []
+                {
+                    "./push",
+                    "-src",
+                    "http://127.0.0.1:5000/",
+                    "-ApiKey",
+                    "my-secret",
+                    $"{_pathProvider.GetEnvironmentPath()}/{NuGet.Name}.{NuGet.Version}.nupkg",
+                });
         }
     }
 }
