@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LocalNuGetManager": {
+      "commandName": "Project",
+      "commandLineArgs": " G:\\Repositories\\MyRepos\\BunFooLib\\Backend\\BunFooLib.Api.Shared\\BunFooLib.Api.Shared.Repository.Contracts\\BunFooLib.Api.Shared.Repository.Contracts G:\\Repositories\\MyRepos\\BunFooLib\\Backend\\BunFooLib.Api.Shared\\BunFooLib.Api.Shared.Repository.Contracts\\"
+    }
+  }
+}

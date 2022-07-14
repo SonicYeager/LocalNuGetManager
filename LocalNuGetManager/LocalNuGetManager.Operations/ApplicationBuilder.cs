@@ -30,10 +30,11 @@ namespace LocalNuGetManager.Operations
             Configuration = ConfigurationBuilder.Build();
 
             //Register Standards
+            ServicesCollection.AddSingleton(Configuration);
+            ServicesCollection.RegisterOptions(Configuration);
             ServicesCollection.RegisterOperations();
             ServicesCollection.AddLogging(o => o.AddConsole());
             ServicesCollection.AddTransient<IApplication, Application>();
-            ServicesCollection.AddSingleton(Configuration);
             
             ServicesProvider = ServicesCollection.BuildServiceProvider();
         }

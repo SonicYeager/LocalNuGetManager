@@ -23,7 +23,7 @@ namespace LocalNuGetManager.Operations.Operations
         public void InterpretArgs(IEnumerable<string> args)
         {
             //read path (seperate into rootPath/AssemblyName)
-            var metaData = new NuGetMetaData(_pathProvider.GetEnvironmentPath(),args.ToList()[1]);
+            var metaData = new NuGetMetaData(args.ToList()[2],args.ToList()[1]);
             _logger.LogInformation("Read Data from CLI as: {MetaData}", metaData);
             
             //save/load known nugets
@@ -38,12 +38,17 @@ namespace LocalNuGetManager.Operations.Operations
                     metaData.AssemblyName,
                     1,
                     0,
-                    0
-                    );
+                    0,
+                    metaData.RootPath);
                 nugetManager!.NuGet = newNuGet;
                 _nuGetManagerCollection.Add(nugetManager);
             }
-            
+            else
+            {
+                _logger.LogInformation("Existing NuGet Manager found. Updating...");
+                nugetManager.NuGet.LastPublishPath = metaData.RootPath;
+            }
+
             //increase version
             _logger.LogInformation("Increasing version from {nugetManager.NuGet.Version}...", nugetManager.NuGet.Version);
             nugetManager.IncreasePatch();
