@@ -12,7 +12,6 @@ namespace LocalNuGetManager.Operations
 {
     public class ApplicationBuilder : IApplicationBuilder
     {
-
         public IConfigurationBuilder ConfigurationBuilder { get; }
         public IConfiguration Configuration { get; }
         public IServiceCollection ServicesCollection { get; }

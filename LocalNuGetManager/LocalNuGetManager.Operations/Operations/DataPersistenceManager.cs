@@ -1,6 +1,5 @@
 ﻿using LocalNuGetManager.Operations.Contracts.Operations;
 using LocalNuGetManager.Operations.Contracts.Options;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

@@ -2,6 +2,7 @@
 using LocalNuGetManager.Operations.Contracts.Operations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace LocalNuGetManager.Operations
 {
@@ -9,11 +10,13 @@ namespace LocalNuGetManager.Operations
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<Application> _logger;
 
-        public Application(IServiceProvider serviceProvider, IConfiguration configuration)
+        public Application(IServiceProvider serviceProvider, IConfiguration configuration, ILogger<Application> logger)
         {
             _serviceProvider = serviceProvider;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public void Run()
@@ -26,7 +29,7 @@ namespace LocalNuGetManager.Operations
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogCritical(e, "An error occurred while running the application.");
                 throw;
             }
         }

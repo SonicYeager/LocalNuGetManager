@@ -5,7 +5,7 @@ namespace LocalNuGetManager.Operations.Operations
 {
     public class PathProvider : IPathProvider
     {
-        private readonly string _enviromentPath = System.Environment.GetEnvironmentVariable("PATH");
+        private readonly string _enviromentPath = Environment.GetEnvironmentVariable("PATH");
         private readonly ILogger<PathProvider> _logger;
         
         public PathProvider(ILogger<PathProvider> logger)
