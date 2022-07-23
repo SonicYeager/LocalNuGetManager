@@ -2,6 +2,6 @@
 {
     public interface IApplication
     {
-        public void Run();
+        public Task<int> Run();
     }
 }

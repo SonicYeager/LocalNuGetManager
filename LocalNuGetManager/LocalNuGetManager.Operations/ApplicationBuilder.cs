@@ -32,6 +32,7 @@ namespace LocalNuGetManager.Operations
             ServicesCollection.AddSingleton(Configuration);
             ServicesCollection.RegisterOptions(Configuration);
             ServicesCollection.RegisterOperations();
+            ServicesCollection.RegisterCommandLine();
             ServicesCollection.AddLogging(o => o.AddConsole());
             ServicesCollection.AddTransient<IApplication, Application>();
             

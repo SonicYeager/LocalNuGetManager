@@ -19,13 +19,14 @@ namespace LocalNuGetManager.Operations
             _logger = logger;
         }
 
-        public void Run()
+        public async Task<int> Run()
         {
             try
             {
                 var cliInterpreter = _serviceProvider.GetService<ICommandLineInterpreter>();
-                var args = Environment.GetCommandLineArgs();
-                cliInterpreter!.InterpretArgs(args);
+                var args = Environment.GetCommandLineArgs().ToList();
+                args.RemoveAt(0);
+                return await cliInterpreter!.InterpretArgs(args);
             }
             catch (Exception e)
             {

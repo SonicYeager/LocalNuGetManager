@@ -1,8 +1,11 @@
-﻿using LocalNuGetManager.Operations.Contracts.Operations;
+﻿using LocalNuGetManager.Operations.Commands;
+using LocalNuGetManager.Operations.Contracts.Operations;
 using LocalNuGetManager.Operations.Contracts.Options;
 using LocalNuGetManager.Operations.Operations;
+using LocalNuGetManager.Operations.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.CommandLine;
 
 namespace LocalNuGetManager.Operations.Extensions
 {
@@ -24,6 +27,14 @@ namespace LocalNuGetManager.Operations.Extensions
             services.AddTransient<INuGetManager, NuGetManager>();
             services.AddTransient<INuGetManagerCollection, NuGetManagerCollection>();
             services.AddTransient<IPathProvider, PathProvider>();
+        }
+
+        public static void RegisterCommandLine(this IServiceCollection services)
+        {
+            services.AddTransient<AssemblyNameArgument>();
+            services.AddTransient<PackagePathArgument>();
+            services.AddTransient<AutoManageCommand>();
+            services.AddTransient<RootCommand, NuGetManagerRootCommand>();
         }
     }
 }

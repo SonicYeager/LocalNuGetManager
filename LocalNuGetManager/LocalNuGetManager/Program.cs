@@ -4,4 +4,4 @@ var builder = Application.CreateBuilder();
 
 var app = builder.Build();
 
- app.Run();
+ return await app.Run();

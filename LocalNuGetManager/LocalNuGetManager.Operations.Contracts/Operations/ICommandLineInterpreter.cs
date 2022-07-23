@@ -2,6 +2,6 @@
 {
     public interface ICommandLineInterpreter
     {
-        public void InterpretArgs(IEnumerable<string> args);
+        public Task<int> InterpretArgs(IEnumerable<string> args);
     }
 }
